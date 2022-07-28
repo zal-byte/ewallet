@@ -5,6 +5,7 @@ Latihan clean architecture di bahasa pemrograman golang
 
 
 # Access
+# User
 | Method | Endpoint    | Description       |
 | ------ | ------      | ------            |
 | GET    | /users      | Fetch all data    |
