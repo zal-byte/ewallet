@@ -19,8 +19,37 @@ func CreateUserHandler(r *gin.Engine, userUsecase user.UserUsecase) {
 	}
 	r.GET("/users", userHandler.getAll)
 	r.GET("/users/:id", userHandler.getById)
+	r.DELETE("/users/:id", userHandler.delete)
+	r.PUT("/users/:id", userHandler.update)
 	r.POST("/users", userHandler.addUser)
 
+}
+
+func (e *UserHandler) delete(c *gin.Context) {
+	id := c.Param("id")
+
+	err := e.userUsecase.Delete(id)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"success": "Delete successfully."})
+}
+
+func (e *UserHandler) update(c *gin.Context) {
+	var user model.Users
+
+	id := c.Param("id")
+	c.ShouldBindJSON(&user)
+
+	res, err := e.userUsecase.Update(id, &user)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+	c.JSON(http.StatusOK, res)
 }
 
 func (e *UserHandler) getById(c *gin.Context) {

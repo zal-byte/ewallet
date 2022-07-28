@@ -4,6 +4,7 @@ import (
 	"errors"
 	"ewallet/model"
 	"ewallet/user"
+	"fmt"
 	"strings"
 )
 
@@ -37,5 +38,23 @@ func (e UserUsecaseImpl) GetById(id string) (*model.Users, error) {
 	}
 
 	return res, nil
+}
 
+func (e UserUsecaseImpl) Update(id string, user *model.Users) (*model.Users, error) {
+	res, err := e.userRepo.Update(id, user)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return res, err
+}
+
+func (e UserUsecaseImpl) Delete(id string) error {
+	err := e.userRepo.Delete(id)
+
+	if err != nil {
+		return err
+	}
+	return nil
 }
