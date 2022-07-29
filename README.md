@@ -5,10 +5,10 @@ Latihan clean architecture di bahasa pemrograman golang
 
 
 # User
-| Method | Endpoint    | Description       |
-| ------ | ------      | ------            |
-| GET    | /users      | Fetch all data    |
-| GET    | /users/{id} | Get data by id    |
-| POST   | /users      | Insert new data   |
-| PUT    | /users/{id} | Update data by id |
-| DELETE | /users/{id} | Delete data by id |
+| TO-DO | Method | Endpoint    | Description       |
+|------ | ------ | ------      | ------            |
+|  [x]  | GET    | /users      | Fetch all data    |
+|  [x]  | GET    | /users/{id} | Get data by id    |
+|  [x]  | POST   | /users      | Insert new data   |
+|  [x]  | PUT    | /users/{id} | Update data by id |
+|  [x]  | DELETE | /users/{id} | Delete data by id |
