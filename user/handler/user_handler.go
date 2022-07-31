@@ -17,6 +17,7 @@ func CreateUserHandler(r *gin.Engine, userUsecase user.UserUsecase) {
 	userHandler := UserHandler{
 		userUsecase: userUsecase,
 	}
+
 	r.GET("/users", userHandler.getAll)
 	r.GET("/users/:id", userHandler.getById)
 	r.DELETE("/users/:id", userHandler.delete)

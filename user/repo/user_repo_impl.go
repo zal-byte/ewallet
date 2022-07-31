@@ -3,6 +3,8 @@ package repo
 import (
 	"ewallet/model"
 	"ewallet/user"
+	"fmt"
+	"strconv"
 
 	"github.com/go-xorm/xorm"
 	"gorm.io/gorm"
@@ -80,7 +82,11 @@ func (e *UserRepoImpl) Create(Users *model.Users) (*model.Users, error) {
 func (e *UserRepoImpl) GetById(id string) (*model.Users, error) {
 	var user model.Users
 
-	res := e.DB.Where("id", id).First(&user)
+	usrId, err := strconv.Atoi(id)
+	if err != nil {
+		return nil, err
+	}
+	res := e.DB.Where(&model.Users{ID: usrId}).First(&user)
 
 	return &user, res.Error
 }
@@ -93,9 +99,15 @@ func (e *UserRepoImpl) Update(id string, user *model.Users) (*model.Users, error
 }
 
 func (e *UserRepoImpl) Delete(id string) error {
-	var usr model.Users
+	// var usr model.Users
 
-	res := e.DB.Where("id", id).Delete(&usr)
+	usrId, err := strconv.Atoi(id)
 
+	if err != nil {
+		return err
+	}
+
+	res := e.DB.Where(&model.Users{ID: usrId}).Delete(&model.Users{})
+	fmt.Println(res.Error)
 	return res.Error
 }

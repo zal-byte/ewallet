@@ -19,3 +19,17 @@ Latihan clean architecture di bahasa pemrograman golang
 - [x] Insert data
 - [x] Update data
 - [x] Delete Data
+
+# Wallet
+| Method | Endpoint      | Description            |
+| ------ | ------        | ------                 |
+| GET    | /wallets/{id} | Get Wallet by id       |
+| POST   | /wallets      | Create new user wallet |
+| PUT    | /wallets/{id} | Update wallet by id    |
+| DELETE | /wallets/{id} | Delete wallet by id    |
+
+# TO-DO Wallet
+- [ ] Get Data By id
+- [ ] Insert Data
+- [ ] Update Data
+- [ ] Delete Data
