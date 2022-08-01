@@ -30,7 +30,7 @@ Database bawaan **MySQL**
 | DELETE | /wallets/{id} | Delete wallet by id    |
 
 # TO-DO Wallet
-- [ ] Get Data By id
-- [ ] Insert Data
+- [x] Get Data By id
+- [x] Insert Data
 - [ ] Update Data
-- [ ] Delete Data
+- [x] Delete Data

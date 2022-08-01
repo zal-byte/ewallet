@@ -2,9 +2,12 @@ package main
 
 import (
 	"ewallet/database"
-	"ewallet/user/handler"
-	"ewallet/user/repo"
-	"ewallet/user/usecase"
+	userHandler "ewallet/user/handler"
+	userRepo "ewallet/user/repo"
+	userUsecases "ewallet/user/usecase"
+	walletHandler "ewallet/wallet/handler"
+	walletRepo "ewallet/wallet/repo"
+	walletUsecases "ewallet/wallet/usecase"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,10 +20,15 @@ func main() {
 
 	router := gin.Default()
 
-	userRepo := repo.CreateUserRepo(db)
-	// userRepo := repo.CreateUserRepoAlt(db)
-	userUsecase := usecase.CreateUserUsecase(userRepo)
-	handler.CreateUserHandler(router, userUsecase)
+	//repository
+	uRepo := userRepo.CreateUserRepo(db)
+	wRepo := walletRepo.CreateWalletRepo(db)
+	//usecase
+	uUsecase := userUsecases.CreateUserUsecase(uRepo)
+	wUsecase := walletUsecases.CreateWalletUsecase(wRepo, uRepo)
+	//Handler
+	userHandler.CreateUserHandler(router, uUsecase)
+	walletHandler.CreateWalletHandler(router, &wUsecase)
 
 	router.Run("localhost:8080")
 }

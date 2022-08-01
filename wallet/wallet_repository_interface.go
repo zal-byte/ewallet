@@ -3,5 +3,9 @@ package wallet
 import "ewallet/model"
 
 type WalletRepo interface {
-	GetByID(id string) (*model.Wallets, error)
+	Create(*model.Wallets) (*model.Wallets, error)
+	GetById(id string) (*model.Wallets, error)
+	Delete(id string) error
+	Update(id string, wall *model.Wallets) (*model.Wallets, error)
+	GetByUserId(id string) (*model.Wallets, error)
 }
