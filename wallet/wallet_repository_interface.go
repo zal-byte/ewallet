@@ -1,6 +1,8 @@
 package wallet
 
-import "ewallet/model"
+import (
+	"ewallet/model"
+)
 
 type WalletRepo interface {
 	Create(*model.Wallets) (*model.Wallets, error)

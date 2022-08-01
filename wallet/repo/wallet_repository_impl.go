@@ -3,7 +3,6 @@ package repo
 import (
 	"ewallet/model"
 	"ewallet/wallet"
-	"fmt"
 
 	"gorm.io/gorm"
 )
@@ -17,7 +16,6 @@ func CreateWalletRepo(DB *gorm.DB) wallet.WalletRepo {
 }
 
 func (e *WalletRepoImpl) Create(wallet *model.Wallets) (*model.Wallets, error) {
-	fmt.Println("User_id : ", wallet.User_id)
 	res := e.DB.Create(&wallet)
 
 	return wallet, res.Error
@@ -41,7 +39,7 @@ func (e *WalletRepoImpl) Delete(id string) error {
 
 func (e *WalletRepoImpl) Update(id string, wall *model.Wallets) (*model.Wallets, error) {
 
-	res := e.DB.Model(&model.Wallets{}).Where("id = ?", id).First(&model.Wallets{}).Updates(&wall)
+	res := e.DB.Model(&model.Wallets{}).Where("id = ?", id).First(&model.Wallets{}).Updates(&wall).Preload("Users").First(&wall)
 
 	return wall, res.Error
 }

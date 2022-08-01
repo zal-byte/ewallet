@@ -60,7 +60,33 @@ func (e *WalletUsecase) Delete(id string) error {
 }
 
 func (e *WalletUsecase) Update(id string, wall *model.Wallets) (*model.Wallets, error) {
-	return e.WalletRepo.Update(id, wall)
+
+	upresult, uperr := e.WalletRepo.GetById(id)
+	
+	if uperr != nil {
+		if strings.Contains("record not found", uperr.Error()) {
+			return nil, errors.New("wallet not found")
+		}
+	}
+
+	ures, err := e.UserRepo.GetById(upresult.User_id)
+
+	if err != nil {
+		if strings.Contains("record not found", err.Error()) {
+			return nil, errors.New("user not found")
+		}
+	}
+
+	res, uperror := e.WalletRepo.Update(id, wall)
+
+	if uperror != nil {
+		panic(uperror)
+	}
+
+	res.Users = *ures
+
+	return res, nil
+
 }
 
 func (e *WalletUsecase) GetByUserId(id string) (*model.Wallets, error) {

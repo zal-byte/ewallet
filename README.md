@@ -32,5 +32,5 @@ Database bawaan **MySQL**
 # TO-DO Wallet
 - [x] Get Data By id
 - [x] Insert Data
-- [ ] Update Data
+- [x] Update Data
 - [x] Delete Data

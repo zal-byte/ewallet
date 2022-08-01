@@ -15,10 +15,13 @@ import (
 func main() {
 
 	db := database.DbConn()
+	
 	con, _ := db.DB()
 	defer con.Close()
 
 	router := gin.Default()
+
+	router.SetTrustedProxies([]string{"127.0.0.1"})
 
 	//repository
 	uRepo := userRepo.CreateUserRepo(db)
