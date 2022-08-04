@@ -72,10 +72,6 @@ func (e *UserHandler) getById(c *gin.Context) {
 
 func (e *UserHandler) getAll(c *gin.Context) {
 
-	test := e.apiToken.GenerateToken()
-
-	fmt.Println("TOKEN : ", test)
-
 	users, err := e.userUsecase.GetAll()
 
 	if err != nil {

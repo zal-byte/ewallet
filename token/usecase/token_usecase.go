@@ -3,17 +3,19 @@ package usecase
 import (
 	"ewallet/model"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
 )
 
-const SECRET_KEY = "MY_SECRET"
+var SECRET_KEY = ""
 
 type TokenUsecase struct {
 }
 
 func CreateTokenUsecase() TokenUsecase {
+	SECRET_KEY = os.Getenv("SECRET_KEY")
 	return TokenUsecase{}
 }
 
