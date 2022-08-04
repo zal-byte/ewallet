@@ -40,6 +40,18 @@ func (e UserUsecaseImpl) GetById(id string) (*model.Users, error) {
 	return res, nil
 }
 
+func (e UserUsecaseImpl) GetByUsername(username string) (*model.Users, error) {
+	res, err := e.userRepo.GetByUsername(username)
+
+	if err != nil {
+		if strings.Contains("record not found", err.Error()) {
+			return nil, errors.New("user not found")
+		}
+	}
+
+	return res, nil
+}
+
 func (e UserUsecaseImpl) Update(id string, user *model.Users) (*model.Users, error) {
 	res, err := e.userRepo.Update(id, user)
 

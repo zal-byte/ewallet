@@ -1,7 +1,9 @@
 package handler
 
 import (
+	"ewallet/middleware"
 	"ewallet/model"
+	"ewallet/token/usecase"
 	"ewallet/user"
 	"fmt"
 	"net/http"
@@ -11,18 +13,22 @@ import (
 
 type UserHandler struct {
 	userUsecase user.UserUsecase
+	apiToken    usecase.TokenUsecase
 }
 
-func CreateUserHandler(r *gin.Engine, userUsecase user.UserUsecase) {
+func CreateUserHandler(r *gin.Engine, userUsecase user.UserUsecase, apiToken usecase.TokenUsecase) {
 	userHandler := UserHandler{
 		userUsecase: userUsecase,
+		apiToken:    apiToken,
 	}
+	group := r.Group("/api")
 
-	r.GET("/users", userHandler.getAll)
-	r.GET("/users/:id", userHandler.getById)
-	r.DELETE("/users/:id", userHandler.delete)
-	r.PUT("/users/:id", userHandler.update)
-	r.POST("/users", userHandler.addUser)
+	group.Use(middleware.Middleware())
+	group.GET("/users", userHandler.getAll)
+	group.GET("/users/:id", userHandler.getById)
+	group.DELETE("/users/:id", userHandler.delete)
+	group.PUT("/users/:id", userHandler.update)
+	group.POST("/users", userHandler.addUser)
 
 }
 
@@ -65,6 +71,10 @@ func (e *UserHandler) getById(c *gin.Context) {
 }
 
 func (e *UserHandler) getAll(c *gin.Context) {
+
+	test := e.apiToken.GenerateToken()
+
+	fmt.Println("TOKEN : ", test)
 
 	users, err := e.userUsecase.GetAll()
 

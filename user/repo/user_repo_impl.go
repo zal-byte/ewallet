@@ -79,6 +79,13 @@ func (e *UserRepoImpl) Create(Users *model.Users) (*model.Users, error) {
 	return Users, err
 }
 
+func (e *UserRepoImpl) GetByUsername(username string) (*model.Users, error) {
+	var usr *model.Users
+	res := e.DB.Model(&model.Users{}).Where("username", username).First(&usr)
+
+	return usr, res.Error
+}
+
 func (e *UserRepoImpl) GetById(id string) (*model.Users, error) {
 	var user model.Users
 
@@ -92,10 +99,10 @@ func (e *UserRepoImpl) GetById(id string) (*model.Users, error) {
 }
 
 func (e *UserRepoImpl) Update(id string, user *model.Users) (*model.Users, error) {
+	var usr model.Users
+	res := e.DB.Model(&model.Users{}).Where("id", id).Updates(&user).First(&usr)
 
-	res := e.DB.Model(&model.Users{}).Where("id", id).Updates(&user)
-
-	return user, res.Error
+	return &usr, res.Error
 }
 
 func (e *UserRepoImpl) Delete(id string) error {

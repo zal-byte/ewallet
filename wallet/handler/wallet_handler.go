@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"ewallet/middleware"
 	"ewallet/model"
 	"ewallet/wallet"
 	"net/http"
@@ -17,10 +18,13 @@ func CreateWalletHandler(r *gin.Engine, walletUsecase wallet.WalletUsecase) {
 		walletUsecase: walletUsecase,
 	}
 
-	r.POST("/wallets", walletHandler.create)
-	r.GET("/wallets/:id", walletHandler.getById)
-	r.DELETE("/wallets/:id", walletHandler.delete)
-	r.PUT("/wallets/:id", walletHandler.update)
+	group := r.Group("/api")
+
+	group.Use(middleware.Middleware())
+	group.POST("/wallets", walletHandler.create)
+	group.GET("/wallets/:id", walletHandler.getById)
+	group.DELETE("/wallets/:id", walletHandler.delete)
+	group.PUT("/wallets/:id", walletHandler.update)
 }
 
 func (e *WalletHandler) update(c *gin.Context) {
@@ -70,8 +74,12 @@ func (e *WalletHandler) getById(c *gin.Context) {
 func (e *WalletHandler) create(c *gin.Context) {
 	var wallets model.Wallets
 
-	err := c.ShouldBindJSON(&wallets)
+	errs := c.ShouldBindJSON(&wallets)
 
+	if errs != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": errs.Error()})
+		return
+	}
 	res, err := e.walletUsecase.Create(&wallets)
 
 	if err != nil {

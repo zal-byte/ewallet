@@ -1,0 +1,47 @@
+package usecase
+
+import (
+	"ewallet/model"
+	"fmt"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
+)
+
+const SECRET_KEY = "MY_SECRET"
+
+type TokenUsecase struct {
+}
+
+func CreateTokenUsecase() TokenUsecase {
+	return TokenUsecase{}
+}
+
+func (e *TokenUsecase) GenerateToken() *model.Claim {
+	expirationTime := time.Now().Add(5 * time.Minute)
+
+	claims := model.Claim{
+		StandardClaims: jwt.StandardClaims{
+			ExpiresAt: expirationTime.Unix(),
+		},
+	}
+	sign := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	token, err := sign.SignedString([]byte(SECRET_KEY))
+	claims.Token = token
+
+	if err != nil {
+		panic(err)
+	}
+	return &claims
+
+}
+
+func Validate(token string) (*jwt.Token, error) {
+	return jwt.Parse(token, func(t *jwt.Token) (interface{}, error) {
+		if _, isvalid := t.Method.(*jwt.SigningMethodHMAC); !isvalid {
+			return nil, fmt.Errorf("invalid token %s", t.Header["alg"])
+		}
+		return []byte(SECRET_KEY), nil
+	})
+}
