@@ -15,7 +15,12 @@ type TokenUsecase struct {
 }
 
 func CreateTokenUsecase() TokenUsecase {
-	SECRET_KEY = os.Getenv("SECRET_KEY")
+	if os.Getenv("SECRET_KEY") == "" {
+		SECRET_KEY = "secret"
+	} else {
+		SECRET_KEY = os.Getenv("SECRET_KEY")
+	}
+
 	return TokenUsecase{}
 }
 
