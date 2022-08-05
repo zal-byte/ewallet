@@ -32,6 +32,7 @@ func (e *TokenUsecase) GenerateToken() *model.Claim {
 			ExpiresAt: expirationTime.Unix(),
 		},
 	}
+	
 	sign := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 
 	token, err := sign.SignedString([]byte(SECRET_KEY))

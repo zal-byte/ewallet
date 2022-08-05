@@ -43,9 +43,8 @@ func (auth AuthUsecase) Login(credential *model.Credential) (*model.LoginRespons
 				}
 			}
 
-
 			generatedToken := auth.jwttoken.GenerateToken()
-			generatedToken.Username = credential.Username
+			generatedToken.Username = usrinfo.Username
 
 			var logres model.LoginResponse = model.LoginResponse{
 				Status: "OK",
